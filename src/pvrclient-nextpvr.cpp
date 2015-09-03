@@ -399,7 +399,7 @@ PVR_ERROR cPVRClientNextPVR::GetEpg(ADDON_HANDLE handle, const PVR_CHANNEL &chan
         char title[128];
         char description[1024];
 
-        strncpy(title, pListingNode->FirstChildElement("name")->FirstChild()->Value(), sizeof title);
+        strncpy(title, pListingNode->FirstChildElement("name")->FirstChild()->Value(), sizeof(title) -1);
         if (pListingNode->FirstChildElement("description") != NULL && pListingNode->FirstChildElement("description")->FirstChild() != NULL)
         {
           PVR_STRCPY(description, pListingNode->FirstChildElement("description")->FirstChild()->Value());
@@ -410,11 +410,11 @@ PVR_ERROR cPVRClientNextPVR::GetEpg(ADDON_HANDLE handle, const PVR_CHANNEL &chan
         }
 
         char start[32];
-        strncpy(start, pListingNode->FirstChildElement("start")->FirstChild()->Value(), sizeof start);
+        strncpy(start, pListingNode->FirstChildElement("start")->FirstChild()->Value(), sizeof(start) -1);
         start[10] = '\0';
 
         char end[32];
-        strncpy(end, pListingNode->FirstChildElement("end")->FirstChild()->Value(), sizeof end);
+        strncpy(end, pListingNode->FirstChildElement("end")->FirstChild()->Value(), sizeof(end) -1);
         end[10] = '\0';
 
         broadcast.iUniqueBroadcastId  = atoi(pListingNode->FirstChildElement("id")->FirstChild()->Value());
@@ -695,7 +695,7 @@ PVR_ERROR cPVRClientNextPVR::GetChannelGroups(ADDON_HANDLE handle, bool bRadio)
         memset(&tag, 0, sizeof(PVR_CHANNEL_GROUP));
         tag.bIsRadio  = false;
         tag.iPosition = 0; // groups default order, unused
-        strncpy(tag.strGroupName, pGroupNode->FirstChildElement("name")->FirstChild()->Value(), sizeof tag.strGroupName);
+        strncpy(tag.strGroupName, pGroupNode->FirstChildElement("name")->FirstChild()->Value(), sizeof(tag.strGroupName) -1);
 
         // tell XBMC about channel, ignoring "All Channels" since xbmc has an built in group with effectively the same function
         if (strcmp(tag.strGroupName, "All Channels") != 0)
@@ -730,7 +730,7 @@ PVR_ERROR cPVRClientNextPVR::GetChannelGroupMembers(ADDON_HANDLE handle, const P
       for( pChannelNode = channelsNode->FirstChildElement("channel"); pChannelNode; pChannelNode=pChannelNode->NextSiblingElement())
       {
         memset(&tag, 0, sizeof(PVR_CHANNEL_GROUP_MEMBER));
-        strncpy(tag.strGroupName, group.strGroupName, sizeof(tag.strGroupName));
+        strncpy(tag.strGroupName, group.strGroupName, sizeof(tag.strGroupName) -1);
         tag.iChannelUniqueId = atoi(pChannelNode->FirstChildElement("id")->FirstChild()->Value());
         tag.iChannelNumber = atoi(pChannelNode->FirstChildElement("number")->FirstChild()->Value());
 
@@ -827,7 +827,7 @@ PVR_ERROR cPVRClientNextPVR::GetRecordings(ADDON_HANDLE handle)
 
         CStdString strStream;
         strStream.Format("http://%s:%d/live?recording=%s", g_szHostname, g_iPort, tag.strRecordingId);
-        strncpy(tag.strStreamURL, strStream.c_str(), sizeof(tag.strStreamURL)); 
+        strncpy(tag.strStreamURL, strStream.c_str(), sizeof(tag.strStreamURL) -1); 
 
 
         PVR->TransferRecordingEntry(handle, &tag);
@@ -864,7 +864,7 @@ PVR_ERROR cPVRClientNextPVR::GetRecordings(ADDON_HANDLE handle)
 
         CStdString strStream;
         strStream.Format("http://%s:%d/live?recording=%s", g_szHostname, g_iPort, tag.strRecordingId);
-        strncpy(tag.strStreamURL, strStream.c_str(), sizeof(tag.strStreamURL)); 
+        strncpy(tag.strStreamURL, strStream.c_str(), sizeof(tag.strStreamURL) -1); 
 
         if (tag.recordingTime <= time(NULL) && (tag.recordingTime + tag.iDuration) >= time(NULL))
         {
@@ -1043,7 +1043,7 @@ PVR_ERROR cPVRClientNextPVR::GetTimers(ADDON_HANDLE handle)
         tag.iClientChannelUid = 8101;
 
         char strTitle[PVR_ADDON_NAME_STRING_LENGTH];
-        strncpy(strTitle, pRecurringNode->FirstChildElement("name")->FirstChild()->Value(), sizeof(strTitle)-1);
+        strncpy(strTitle, pRecurringNode->FirstChildElement("name")->FirstChild()->Value(), sizeof(strTitle) -1);
         strncat(tag.strTitle, XBMC->GetLocalizedString(30054), sizeof(tag.strTitle) - 1);
         strncat(tag.strTitle, " ", sizeof(tag.strTitle) - 1);
         strncat(tag.strTitle, strTitle, sizeof(tag.strTitle) - 1);
@@ -1107,7 +1107,7 @@ PVR_ERROR cPVRClientNextPVR::GetTimers(ADDON_HANDLE handle)
 
         // start/end time
         char start[32];
-        strncpy(start, pRecordingNode->FirstChildElement("start_time_ticks")->FirstChild()->Value(), sizeof start);
+        strncpy(start, pRecordingNode->FirstChildElement("start_time_ticks")->FirstChild()->Value(), sizeof(start) -1);
         start[10] = '\0';
         tag.startTime           = atol(start);
         tag.endTime             = tag.startTime + atoi(pRecordingNode->FirstChildElement("duration_seconds")->FirstChild()->Value());
