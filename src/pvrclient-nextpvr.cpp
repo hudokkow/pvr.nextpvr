@@ -566,10 +566,6 @@ CStdString cPVRClientNextPVR::GetChannelIcon(int channelID)
             {
               XBMC->WriteFile(fileHandle, (unsigned char *)buf, read);
             }
-            else if (read < 0 && written > 0)
-            {
-              connected = false;
-            }
           }
 
           // close file

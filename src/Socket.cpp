@@ -1,4 +1,4 @@
-/*
+-/*
  *      Copyright (C) 2005-2011 Team XBMC
  *      http://www.xbmc.org
  *
@@ -355,11 +355,6 @@ bool Socket::ReadResponse (int &code, vector<string> &lines)
       pos3 = 0;
     }
 
-    if (cont == ' ')
-    {
-      break;
-    }
-
     timeout.tv_sec  = RECEIVE_TIMEOUT;
     timeout.tv_usec = 0;
 
@@ -408,8 +403,6 @@ bool Socket::ReadResponse (int &code, vector<string> &lines)
 
     line.append(buffer);
   }
-
-  return true;
 }
 
 int Socket::receive ( std::string& data) const
